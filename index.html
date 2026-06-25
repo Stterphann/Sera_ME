@@ -41,14 +41,14 @@
                 question: "O paciente pontua Glasgow 3 (ou 1 na escala de coma de Glasgow Pupilar)?",
                 yes: "q2",
                 no: "result_sedacao",
-                progress: 30
+                progress: 10
             },
             q1: {
                 title: "Lesão Encefálica Conhecida",
                 question: "O paciente apresenta uma lesão encefálica de causa conhecida, definida e irreversível?",
                 yes: "q1",
                 no: "result_nao_crit",
-                progress: 15
+                progress: 30
             },
             q2: {
                 title: "Coma Aperceptivo",
@@ -105,7 +105,7 @@
                 isResult: true,
                 type: "warning",
                 title: "Coma Não Aperceptivo",
-                desc: "Presença de reflexos ou respostas motoras coordenadas afasta o diagnóstico de M.E. Mantenha os cuidados intensivos + se GLASGOW < 7 = NOTIFIQUE e-DOT local.",
+                desc: "Presença de reflexos ou respostas motoras coordenadas afasta o diagnóstico de M.E. Mantenha os cuidados intensivos - se GLASGOW < 7 = NOTIFIQUE e-DOT local.",
                 actionText: "Reiniciar Triagem"
             },
             result_notificar_opo: {
