@@ -45,28 +45,28 @@
             },
             q1: {
                 title: "Escala de Coma",
-                question: "O paciente pontua Glasgow 3 (ou FOUR pontuação motora 0)?",
+                question: "O paciente pontua Glasgow 3 (ou 1 na escala de coma de Glasgow Pupilar)?",
                 yes: "q2",
                 no: "result_sedacao",
                 progress: 30
             },
             q2: {
                 title: "Coma Aperceptivo",
-                question: "O coma é aperceptivo? (Ausência total de resposta motora perceptível a estímulos externos dolorosos supraespinhais)",
+                question: "O coma é aperceptivo? (Ausência resposta motora perceptível a estímulos externos dolorosos supraespinhais)",
                 yes: "q3",
                 no: "result_nao_coma",
                 progress: 45
             },
             q3: {
                 title: "Exame das Pupilas",
-                question: "As pupilas estão fixas e fotorreagentes (midriáticas ou paralisadas)?",
+                question: "As pupilas estão fixas e arreativas? (midriáticas ou médio fixas)?",
                 yes: "q5", // vai direto para checar causas tratáveis
                 no: "q4",  // trata a exceção que você citou
                 progress: 60
             },
             q4: {
                 title: "Outros Reflexos de Tronco",
-                question: "Apesar das pupilas, há ausência de outros reflexos (córneo-palpebral, oculocefálico, vestíbulo-coclear ou carotídeo)?",
+                question: "Há ausência de outros reflexos (córneo-palpebral, oculocefálico, vestíbulo-coclear )?",
                 yes: "result_notificar_opo", // Não preenche tudo pra ME mas é grave -> Notifica
                 no: "result_investigar",
                 progress: 75
@@ -91,7 +91,7 @@
                 isResult: true,
                 type: "warning",
                 title: "Sem Critérios Clínicos no Momento",
-                desc: "A Morte Encefálica exige uma lesão estrutural catastrófica conhecida. Continue o monitoramento neurocrítico regular do paciente.",
+                desc: "A Morte Encefálica exige uma lesão estrutural catastrófica conhecida. Continue o monitoramento neurocrítico regular do paciente > NOTIFIQUE A e-DOT local.",
                 actionText: "Reiniciar Triagem"
             },
             result_sedacao: {
