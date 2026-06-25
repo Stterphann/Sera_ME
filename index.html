@@ -37,18 +37,18 @@
         // Estrutura de dados dos passos do algoritmo
         const steps = {
             start: {
-                title: "Lesão Encefálica Conhecida",
-                question: "O paciente apresenta uma lesão encefálica de causa conhecida, definida e irreversível?",
-                yes: "q1",
-                no: "result_nao_crit",
-                progress: 15
-            },
-            q1: {
                 title: "Escala de Coma",
                 question: "O paciente pontua Glasgow 3 (ou 1 na escala de coma de Glasgow Pupilar)?",
                 yes: "q2",
                 no: "result_sedacao",
                 progress: 30
+            },
+            q1: {
+                title: "Lesão Encefálica Conhecida",
+                question: "O paciente apresenta uma lesão encefálica de causa conhecida, definida e irreversível?",
+                yes: "q1",
+                no: "result_nao_crit",
+                progress: 15
             },
             q2: {
                 title: "Coma Aperceptivo",
@@ -61,7 +61,7 @@
                 title: "Exame das Pupilas",
                 question: "As pupilas estão fixas e arreativas? (midriáticas ou médio fixas)?",
                 yes: "q5", // vai direto para checar causas tratáveis
-                no: "q4",  // trata a exceção que você citou
+                no: "q4",  // trata a exceção
                 progress: 60
             },
             q4: {
@@ -91,7 +91,7 @@
                 isResult: true,
                 type: "warning",
                 title: "Sem Critérios Clínicos no Momento",
-                desc: "A Morte Encefálica exige uma lesão estrutural catastrófica conhecida. Continue o monitoramento neurocrítico regular do paciente > NOTIFIQUE A e-DOT local.",
+                desc: "A Morte Encefálica exige uma lesão estrutural catastrófica conhecida. Continue o monitoramento neurocrítico regular do paciente + providencie exame de imagem! > NOTIFIQUE A e-DOT local.",
                 actionText: "Reiniciar Triagem"
             },
             result_sedacao: {
@@ -105,14 +105,14 @@
                 isResult: true,
                 type: "warning",
                 title: "Coma Não Aperceptivo",
-                desc: "Presença de reflexos ou respostas motoras coordenadas afasta o diagnóstico de M.E. Mantenha os cuidados intensivos.",
+                desc: "Presença de reflexos ou respostas motoras coordenadas afasta o diagnóstico de M.E. Mantenha os cuidados intensivos + se GLASGOW < 7 = NOTIFIQUE e-DOT local.",
                 actionText: "Reiniciar Triagem"
             },
             result_notificar_opo: {
                 isResult: true,
                 type: "danger",
                 title: "NOTIFICAR OPO IMEDIATAMENTE",
-                desc: "O paciente pode não preencher estritamente todos os critérios clássicos de M.E. na pupila, mas apresenta um quadro neurológico gravíssimo e irreversível. **Notifique a Organização de Procura de Órgãos (OPO)** como potencial doador.",
+                desc: "O paciente pode não preencher estritamente todos os critérios clássicos de M.E., mas apresenta um quadro neurológico gravíssimo e irreversível. **Notifique a Organização de Procura de Órgãos (OPO)** como potencial doador.",
                 actionText: "Novo Paciente"
             },
             result_investigar: {
@@ -133,14 +133,14 @@
                 isResult: true,
                 type: "danger",
                 title: "REALIZAR EXAME DE IMAGEM",
-                desc: "A suspeita clínica é fortíssima, mas é obrigatório ter a documentação da lesão por imagem. Providencie a Tomografia/Ressonância e, se confirmado o dano, abra o protocolo.",
+                desc: "A suspeita clínica é fortíssima, mas é obrigatório ter a documentação da lesão por imagem. Providencie a Tomografia/Ressonância e, se confirmado o dano, notifique a e-DOT local e abra o protocolo.",
                 actionText: "Voltar para Início"
             },
             result_abrir_protocolo: {
                 isResult: true,
                 type: "success",
                 title: "ABRIR PROTOCOLO + NOTIFICAR OPO",
-                desc: "Todos os pré-requisitos foram atingidos. **Inicie o Protocolo de Determinação de Morte Encefálica** (exames clínicos + teste de apneia + exame complementar) e **Notifique a OPO imediatamente** conforme a legislação.",
+                desc: "Todos os pré-requisitos foram atingidos. **Iniciar o Protocolo de Determinação de Morte Encefálica** (exames clínicos + teste de apneia + exame complementar) e **Notifique a OPO imediatamente** conforme a legislação.",
                 actionText: "Novo Paciente"
             }
         };
