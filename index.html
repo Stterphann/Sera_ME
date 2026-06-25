@@ -36,114 +36,100 @@
     <script>
         // Estrutura de dados dos passos do algoritmo
         const steps = {
-            start: {
-                title: "Escala de Coma",
-                question: "O paciente pontua Glasgow 3 ( ou 1 na escala de coma de Glasgow Pupilar) ou RASS -5?",
-                yes: "q1",
-                no: "result_sedacao",
-                progress: 10
-            },
-            q1: {
-                title: "Lesão Encefálica Conhecida",
-                question: "O paciente apresenta uma lesão encefálica de causa conhecida, definida e irreversível?",
-                yes: "q2",
-                no: "result_nao_crit",
-                progress: 30
-            },
-            q2: {
-                title: "Coma Aperceptivo",
-                question: "O coma é aperceptivo? (Ausência resposta motora perceptível a estímulos externos dolorosos supraespinhais)",
-                yes: "q3",
-                no: "result_nao_coma",
-                progress: 45
-            },
-            q3: {
-                title: "Exame das Pupilas",
-                question: "As pupilas estão fixas e arreativas? (midriáticas ou médio fixas)?",
-                yes: "q5", // vai direto para checar causas tratáveis
-                no: "q4",  // trata a exceção
-                progress: 60
-            },
-            q4: {
-                title: "Outros Reflexos de Tronco",
-                question: "Há ausência de outros reflexos (córneo-palpebral, oculocefálico, vestíbulo-coclear )?",
-                yes: "result_notificar_opo", // Não preenche tudo pra ME mas é grave -> Notifica
-                no: "result_investigar",
-                progress: 75
-            },
-            q5: {
-                title: "Causas Tratáveis",
-                question: "Foram excluídas hipotermia (Temp < 35°C), distúrbios metabólicos graves ou efeito de drogas depressoras do SNC?",
-                yes: "q6",
-                no: "result_corrigir",
-                progress: 90
-            },
-            q6: {
-                title: "Exame de Imagem",
-                question: "Há exame de imagem (Tomografia/Ressonância) recente que demonstre a lesão estrutural de forma clara?",
-                yes: "result_abrir_protocolo",
-                no: "result_imagem",
-                progress: 100
-            },
+    start: {
+        title: "Escala de Coma",
+        question: "O paciente pontua Glasgow 3 (ou 1 na escala de coma de Glasgow Pupilar) ou RASS -5?",
+        yes: "q1", 
+        no: "result_sedacao",
+        progress: 20
+    },
+    q1: {
+        title: "Nexo Causal e Imagem",
+        question: "A causa do coma é conhecida E há exame de imagem (Tomografia/Ressonância) que comprove a lesão encefálica estrutural?",
+        yes: "q2", // Avança direto para o exame físico se já tem imagem
+        no: "result_imagem_urgente", // Se não tem imagem, para aqui e manda fazer
+        progress: 40
+    },
+    q2: {
+        title: "Coma Aperceptivo",
+        question: "O coma é aperceptivo? (Ausência de resposta motora perceptível a estímulos externos dolorosos supraespinhais)",
+        yes: "q3",
+        no: "result_nao_coma",
+        progress: 60
+    },
+    q3: {
+        title: "Exame das Pupilas",
+        question: "As pupilas estão fixas e arreativas (midriáticas ou médio-fixas)?",
+        yes: "q5", // Vai direto para fatores de confusão
+        no: "q4",  // Desvia para a exceção de tronco
+        progress: 80
+    },
+    q4: {
+        title: "Outros Reflexos de Tronco",
+        question: "Apesar das pupilas, há ausência de outros reflexos (córneo-palpebral, oculocefálico, vestíbulo-coclear)?",
+        yes: "result_notificar_opo", 
+        no: "result_investigar",
+        progress: 90
+    },
+    q5: {
+        title: "Causas Tratáveis",
+        question: "Foram excluídas hipotermia (Temp < 35°C), distúrbios metabólicos graves ou efeito de drogas depressoras do SNC?",
+        yes: "result_abrir_protocolo", // Último passo positivo, vai direto pro resultado final!
+        no: "result_corrigir",
+        progress: 100
+    },
 
-            // --- TELAS DE DESTINO / RESULTADOS ---
-            result_nao_crit: {
-                isResult: true,
-                type: "warning",
-                title: "Sem Critérios Clínicos no Momento",
-                desc: "A Morte Encefálica exige uma lesão estrutural catastrófica conhecida. Continue o monitoramento neurocrítico regular do paciente + providencie exame de imagem! > NOTIFIQUE A e-DOT local.",
-                actionText: "Reiniciar Triagem"
-            },
-            result_sedacao: {
-                isResult: true,
-                type: "info",
-                title: "Avaliar Sedação e Evolução",
-                desc: "Paciente não está em pontuação mínima. Se houver uso de sedativos, aguarde o tempo de eliminação (washout) para reavaliação clínica - se GLASGOW < 7 = NOTIFIQUE e-DOT local.",
-                actionText: "Reiniciar Triagem"
-            },
-            result_nao_coma: {
-                isResult: true,
-                type: "warning",
-                title: "Coma Não Aperceptivo",
-                desc: "Presença de reflexos ou respostas motoras coordenadas afasta o diagnóstico de M.E. Mantenha os cuidados intensivos - se GLASGOW < 7 = NOTIFIQUE e-DOT local.",
-                actionText: "Reiniciar Triagem"
-            },
-            result_notificar_opo: {
-                isResult: true,
-                type: "danger",
-                title: "NOTIFICAR OPO IMEDIATAMENTE",
-                desc: "O paciente pode não preencher estritamente todos os critérios clássicos de M.E., mas apresenta um quadro neurológico gravíssimo e irreversível. **Notifique a Organização de Procura de Órgãos (OPO)** como potencial doador.",
-                actionText: "Novo Paciente"
-            },
-            result_investigar: {
-                isResult: true,
-                type: "info",
-                title: "Investigar Assimetrias",
-                desc: "O quadro não aponta para M.E. clara e faltam dados de gravidade imediata para a OPO. Discuta a condução com a neurologia/neurocirurgia.",
-                actionText: "Reiniciar"
-            },
-            result_corrigir: {
-                isResult: true,
-                type: "warning",
-                title: "Corrigir Fatores de Confusão",
-                desc: "Protocolos de M.E. não podem ser abertos sob hipotermia ou efeito de sedativos. Aqueça o paciente (>35°C) e aguarde o tempo correto de eliminação das drogas.",
-                actionText: "Voltar para Início"
-            },
-            result_imagem: {
-                isResult: true,
-                type: "danger",
-                title: "REALIZAR EXAME DE IMAGEM",
-                desc: "A suspeita clínica é fortíssima, mas é obrigatório ter a documentação da lesão por imagem. Providencie a Tomografia/Ressonância e, se confirmado o dano, notifique a e-DOT local e abra o protocolo.",
-                actionText: "Voltar para Início"
-            },
-            result_abrir_protocolo: {
-                isResult: true,
-                type: "success",
-                title: "ABRIR PROTOCOLO + NOTIFICAR OPO",
-                desc: "Todos os pré-requisitos foram atingidos. **Iniciar o Protocolo de Determinação de Morte Encefálica** (exames clínicos + teste de apneia + exame complementar) e **Notifique a OPO imediatamente** conforme a legislação.",
-                actionText: "Novo Paciente"
-            }
-        };
+    // --- TELAS DE DESTINO / RESULTADOS ATUALIZADAS ---
+    result_sedacao: {
+        isResult: true,
+        type: "info",
+        title: "Avaliar Sedação e Evolução",
+        desc: "Paciente não está em pontuação mínima de coma. Se houver uso de sedativos, aguarde o tempo de eliminação (washout) para reavaliação clínica. Se o GLASGOW clínico geral for menor que 7, NOTIFIQUE a e-DOT local.",
+        actionText: "Reiniciar Triagem"
+    },
+    result_imagem_urgente: {
+        isResult: true,
+        type: "danger",
+        title: "PROVIDENCIAR EXAME DE IMAGEM",
+        desc: "A Morte Encefálica exige a comprovação documental da lesão estrutural. **Providencie a Tomografia ou Ressonância imediatamente.** Como o paciente está em coma grave, aproveite para **NOTIFICAR a e-DOT local** sobre o caso.",
+        actionText: "Voltar para Início"
+    },
+    result_nao_coma: {
+        isResult: true,
+        type: "warning",
+        title: "Coma Não Aperceptivo",
+        desc: "Presença de reflexos ou respostas motoras coordenadas afasta o diagnóstico de M.E. Mantenha os cuidados intensivos. Se o GLASGOW geral for menor que 7, NOTIFIQUE a e-DOT local.",
+        actionText: "Reiniciar Triagem"
+    },
+    result_notificar_opo: {
+        isResult: true,
+        type: "danger",
+        title: "NOTIFICAR OPO IMEDIATAMENTE",
+        desc: "O paciente apresenta assimetria ou particularidade pupilar, mas tem ausência dos outros reflexos de tronco e lesão comprovada por imagem. O quadro é gravíssimo e irreversível. *Notifique a OPO/e-DOT imediatamente*",
+        actionText: "Novo Paciente"
+    },
+    result_investigar: {
+        isResult: true,
+        type: "info",
+        title: "Investigar Quadro Neurológico",
+        desc: "O quadro não aponta para M.E. e os reflexos de tronco preservados afastam a suspeita imediata para a OPO/e-DOT. Discuta a condução do caso com a neurologia ou neurocirurgia.",
+        actionText: "Reiniciar"
+    },
+    result_corrigir: {
+        isResult: true,
+        type: "warning",
+        title: "Corrigir Fatores de Confusão",
+        desc: "Embora a clínica e a imagem apontem para M.E., o protocolo não pode ser aberto sob hipotermia ou efeito de sedativos. Aqueça o paciente (>35°C), aguarde o tempo de eliminação das drogas e reinicie a avaliação.",
+        actionText: "Voltar para Início"
+    },
+    result_abrir_protocolo: {
+        isResult: true,
+        type: "success",
+        title: "ABRIR PROTOCOLO + NOTIFICAR OPO/e-DOT",
+        desc: "Todos os pré-requisitos clínicos, de imagem e de estabilidade fisiológica foram atingidos. *Notifique a OPO/e-DOT imediatamente* e *Inicie o Protocolo de Determinação de Morte Encefálica* conforme a legislação vigente.",
+        actionText: "Novo Paciente"
+    }
+};
 
         let currentStep = "start";
 
